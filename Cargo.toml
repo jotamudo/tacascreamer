@@ -1,0 +1,61 @@
+[package]
+authors = ["jotamudo <juanvasconceloslopes@gmail.com>"]
+edition = "2021"
+readme = "README.md"
+name = "bare_daisy"
+description = "daisy seed basic firmware with only the PAC for the stm32h750ib"
+version = "0.1.0"
+
+[dependencies]
+defmt = "0.3.8"
+defmt-rtt = "0.4.1"
+defmt-test = "0.3.2"
+
+panic-probe = { version = "0.3", features = ["print-defmt"] }
+# futures = { version = "0.3.17", default-features = false, features = ["async-await"] }
+heapless = { version = "0.8", default-features = false }
+#chrono = { version = "^0.4", default-features = false }
+# rand = { version = "0.8.5", default-features = false }
+# compile time defines
+static_cell = { version = "2", features = ["nightly"]}
+# micromath = "2.0.0"
+
+#RTOS
+# rtic = { version = "2.0.1", features = ["cortex-m", "thumbv7-backend", "rtic-monotonics", "test-critical-section"] }
+# rtic-monotonics = { version = "1.0.0", features = [ "cortex-m-systick" ]}
+
+#serialisation
+# serde = { version = "1.0.193", default-features = false, features = ["derive"] }
+# serde-json-core = "0.5.1"
+
+stm32h7 = {version = "0.15.1", features = ["stm32h743v", "rt"]}
+cortex-m-rt = {version = "0.7.4", features = ["device", "zero-init-ram"]}
+cortex-m = { version = "0.7.7", features = ["cm7", "inline-asm", "critical-section-single-core"] }
+panic-halt = "0.2.0"
+
+# embedded-hal = {version = "0.2.6", features = ["unproven"]}
+# embedded-hal-async = { version = "=1.0.0-rc.1" }
+# embedded-hal-bus = { version = "=0.1.0-rc.1", features = ["async"] }
+embedded-hal = "1.0.0"
+static-alloc = "0.2.5"
+fugit = {version = "0.3.7", features = ["defmt"]}
+thiserror = { version = "1.0.50", package = "thiserror-core", default-features = false }
+zerocopy = {version = "0.7.35", features = ["derive"]}
+anyhow = {version = "1.0.86", default-features = false}
+spin = "0.9.8"
+embedded-io = {version = "0.6.1", featues = ["defmt-03"]}
+embedded-hal-async = "1.0.0"
+atomic_enum = "0.3.0"
+
+
+# this lets you use `cargo fix`!
+[[bin]]
+name = "main_app"
+path = "src/main.rs"
+test = false
+bench = false
+
+[profile.release]
+codegen-units = 1 # better optimizations
+debug = true # symbols are nice and they don't increase the size on Flash
+lto = true # better optimizations
