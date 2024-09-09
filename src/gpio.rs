@@ -46,7 +46,10 @@ pub mod led {
 pub mod gpio {
     use stm32h7::stm32h743v::{GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH, GPIOI, GPIOJ, GPIOK};
     use defmt::Format;
-    use core::default::Default;
+    use core::{
+        default::Default, 
+        marker::PhantomData
+    };
 
     pub trait GpioBank {}
 
@@ -104,8 +107,15 @@ pub mod gpio {
         VeryHigh,
     }
 
+    trait PinNumber;
+    struct _PinNumber<N>{
+        _n: PhantomData<N>
+    }
+
+    impl PinNumber for _PinNumber<N> {}
+
     #[derive(Debug, Format)]
-    pub struct GpioPin<'a, B: GpioBank> {
+    pub struct GpioPin<'a, B: GpioBank, N: PinNumber, S: GpioSpeed, M: GpioMode, P: GpioPull> {
         bank: &'a B,
         pin: u8,
         speed: GpioSpeed
